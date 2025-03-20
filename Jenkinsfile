@@ -2,12 +2,10 @@ pipeline {
     agent any
     
     environment {
-        // Use the working credential ID from the logs
-        GIT_CREDENTIALS_ID = '51dce4ea-fa48-4e6d-bd33-781e009f5571'  
+        GIT_CREDENTIALS_ID = '51dce4ea-fa48-4b33-781e009f5571'  
         GIT_REPO = 'https://github.com/Sanjana24-hub/jenkins-ci-cd.git'
         GIT_BRANCH = 'main'
-        // Define SMTP credentials properly
-        SMTP_CREDS = credentials('gmail-smtp')
+        SMTP_CREDS = credentials('gmail-smtp') // Ensure this credential ID is correct
     }
     
     stages {
@@ -92,8 +90,8 @@ pipeline {
                             <p><b>Changes:</b> <a href='${env.BUILD_URL}changes'>View Changes</a></p>
                         </body>
                     </html>""",
-                    to: 'sanjana4809.be23@chitkara.edu.in',
-                    from: 'jenkins@example.com',
+                    to: 'sanjana4809.be23@chitkara.edu.in', // Ensure this email is correct
+                    from: 'jenkins@example.com', // Update with a valid sender email
                     replyTo: 'sanjana4809.be23@chitkara.edu.in',
                     mimeType: 'text/html'
                 )
@@ -107,5 +105,3 @@ pipeline {
         }
     }
 }
-
-
