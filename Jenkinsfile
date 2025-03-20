@@ -90,9 +90,9 @@ pipeline {
                             <p><b>Changes:</b> <a href='${env.BUILD_URL}changes'>View Changes</a></p>
                         </body>
                     </html>""",
-                    to: 'sanjana4809.be23@chitkara.edu.in', // Ensure this email is correct
+                    to: 'sanjanakumari5700@gmail.com', // Ensure this email is correct
                     from: 'jenkins@example.com', // Update with a valid sender email
-                    replyTo: 'sanjana4809.be23@chitkara.edu.in',
+                    replyTo: 'sanjanakumari5700@gmail.com',
                     mimeType: 'text/html'
                 )
             }
