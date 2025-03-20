@@ -76,35 +76,29 @@ pipeline {
         }
     }
     
-  post {
-    always {
-        script {
-            echo "DEBUG: Sending email notification..."
-            
-            emailext(
-                subject: "Jenkins Pipeline: ${currentBuild.fullDisplayName} - ${currentBuild.result}",
-                body: """<html>
-                    <body>
-                        <h2>Build Summary</h2>
-                        <p><b>Project:</b> ${env.JOB_NAME}</p>
-                        <p><b>Build Number:</b> ${env.BUILD_NUMBER}</p>
-                        <p><b>Status:</b> ${currentBuild.result}</p>
-                        <p><b>Duration:</b> ${currentBuild.durationString}</p>
-                        <p><b>Complete Build Log:</b> <a href='${env.BUILD_URL}console'>View Log</a></p>
-                        <p><b>Changes:</b> <a href='${env.BUILD_URL}changes'>View Changes</a></p>
-                    </body>
-                </html>""",
-                to: 'sanjana4809.be23@chitkara.edu.in',
-                from: 'jenkins@example.com',
-                replyTo: 'sanjana4809.be23@chitkara.edu.in',
-                mimeType: 'text/html'
-            )
-
-            echo "DEBUG: Email notification sent (Check logs if not received)."
+    post {
+        always {
+            script {
+                emailext(
+                    subject: "Jenkins Pipeline: ${currentBuild.fullDisplayName} - ${currentBuild.result}",
+                    body: """<html>
+                        <body>
+                            <h2>Build Summary</h2>
+                            <p><b>Project:</b> ${env.JOB_NAME}</p>
+                            <p><b>Build Number:</b> ${env.BUILD_NUMBER}</p>
+                            <p><b>Status:</b> ${currentBuild.result}</p>
+                            <p><b>Duration:</b> ${currentBuild.durationString}</p>
+                            <p><b>Complete Build Log:</b> <a href='${env.BUILD_URL}console'>View Log</a></p>
+                            <p><b>Changes:</b> <a href='${env.BUILD_URL}changes'>View Changes</a></p>
+                        </body>
+                    </html>""",
+                    to: 'sanjana4809.be23@chitkara.edu.in',
+                    from: 'jenkins@example.com',
+                    replyTo: 'sanjana4809.be23@chitkara.edu.in',
+                    mimeType: 'text/html'
+                )
+            }
         }
-    }
-}
-
         success {
             echo 'Pipeline completed successfully!'
         }
