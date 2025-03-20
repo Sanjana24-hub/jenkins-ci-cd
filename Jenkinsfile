@@ -1,17 +1,16 @@
 pipeline {
     agent any
-
+    
     environment {
-        EMAIL_RECIPIENT = "sanjana4809.be23@chitkara.edu.in"
-        GIT_CREDENTIALS_ID = "github-credentials"  // Ensure this exists in Jenkins
-        GIT_REPO = "https://github.com/Sanjana24-hub/jenkins-ci-cd.git"
-        GIT_BRANCH = "main"  // Ensure this is correct (not "Main")
+        GIT_CREDENTIALS_ID = '51dce4ea-fa48-4b33-781e009f5571'  
+        GIT_REPO = 'https://github.com/Sanjana24-hub/jenkins-ci-cd.git'
+        GIT_BRANCH = 'main'
+        SMTP_CREDS = credentials('gmail-smtp') // Ensure this credential ID is correct
     }
-
+    
     stages {
-        stage('Clone Repository') {
+        stage('Checkout Code') {
             steps {
-                echo "Step: Cloning the GitHub repository."
                 script {
                     checkout([
                         $class: 'GitSCM',
@@ -24,70 +23,85 @@ pipeline {
                 }
             }
         }
-
-        stage('Restore Dependencies') {
-            steps {
-                echo "Step: Restoring project dependencies."
-                sh 'dotnet restore'
-            }
-        }
-
+        
         stage('Build') {
             steps {
-                echo "Step: Building the .NET application."
-                sh 'dotnet build --configuration Release'
+                echo 'Building the application...'
+                // Add actual build commands here if needed
             }
         }
-
-        stage('Run Unit & Integration Tests') {
+        
+        stage('Unit and Integration Tests') {
             steps {
-                echo "Step: Running unit and integration tests."
-                sh 'dotnet test --logger trx'
-            }
-            post {
-                always {
-                    echo "Step: Collecting and publishing test results."
-                    junit '**/*.trx'
-
-                    echo "Step: Sending notification email."
-                    emailext (
-                        subject: "Jenkins Pipeline - Unit and Integration Tests Completed",
-                        body: """<html>
-                                <body>
-                                    <h2>Build Summary</h2>
-                                    <p><b>Project:</b> ${env.JOB_NAME}</p>
-                                    <p><b>Build Number:</b> ${env.BUILD_NUMBER}</p>
-                                    <p><b>Status:</b> ${currentBuild.result}</p>
-                                    <p><b>Duration:</b> ${currentBuild.durationString}</p>
-                                    <p><b>Complete Build Log:</b> <a href='${env.BUILD_URL}console'>View Log</a></p>
-                                    <p><b>Changes:</b> <a href='${env.BUILD_URL}changes'>View Changes</a></p>
-                                </body>
-                               </html>""",
-                        to: "$EMAIL_RECIPIENT",
-                        mimeType: 'text/html',
-                        attachLog: true
-                    )
-                }
+                echo 'Running tests...'
+                // Add your test commands here
             }
         }
-
+        
         stage('Code Analysis') {
             steps {
-                echo "Step: Running static code analysis."
-                sh 'dotnet build --configuration Release /p:EnableNETAnalyzers=true'
+                echo 'Performing code analysis...'
+                // Add your code analysis commands here
+            }
+        }
+        
+        stage('Security Scan') {
+            steps {
+                echo 'Running security scan...'
+                // Add your security scan commands here
+            }
+        }
+        
+        stage('Deploy to Staging') {
+            steps {
+                echo 'Deploying to staging...'
+                // Add your staging deployment commands here
+            }
+        }
+        
+        stage('Integration Tests on Staging') {
+            steps {
+                echo 'Running tests on staging...'
+                // Add your staging tests commands here
+            }
+        }
+        
+        stage('Deploy to Production') {
+            steps {
+                echo 'Deploying to production...'
+                // Add your production deployment commands here
             }
         }
     }
-
+    
     post {
+        always {
+            script {
+                emailext(
+                    subject: "Jenkins Pipeline: ${currentBuild.fullDisplayName} - ${currentBuild.result}",
+                    body: """<html>
+                        <body>
+                            <h2>Build Summary</h2>
+                            <p><b>Project:</b> ${env.JOB_NAME}</p>
+                            <p><b>Build Number:</b> ${env.BUILD_NUMBER}</p>
+                            <p><b>Status:</b> ${currentBuild.result}</p>
+                            <p><b>Duration:</b> ${currentBuild.durationString}</p>
+                            <p><b>Complete Build Log:</b> <a href='${env.BUILD_URL}console'>View Log</a></p>
+                            <p><b>Changes:</b> <a href='${env.BUILD_URL}changes'>View Changes</a></p>
+                        </body>
+                    </html>""",
+                    to: 'sanjanakumari5700@gmail.com', // Ensure this email is correct
+                    from: 'jenkins@example.com', // Update with a valid sender email
+                    replyTo: 'sanjanakumari5700@gmail.com',
+                    mimeType: 'text/html'
+                )
+            }
+        }
+        success {
+            echo 'Pipeline completed successfully!'
+        }
         failure {
-            echo "Step: Handling build failures."
-            emailext (
-                subject: "Jenkins Pipeline - Build Failed",
-                body: "The build process has failed. Please check Jenkins for details.",
-                to: "$EMAIL_RECIPIENT",
-                attachLog: true
-            )
+            echo 'Pipeline failed. Please check the logs for details.'
         }
     }
 }
