@@ -3,15 +3,25 @@ pipeline {
 
     environment {
         EMAIL_RECIPIENT = "sanjana4809.be23@chitkara.edu.in"
-        SMTP_USER = "sanjana4809.be23@chitkara.edu.in"
-        SMTP_PASS = "xklsxopfftsemvvq"  // Store securely in Jenkins credentials
+        GIT_CREDENTIALS_ID = "github-credentials"  // Ensure this exists in Jenkins
+        GIT_REPO = "https://github.com/Sanjana24-hub/jenkins-ci-cd.git"
+        GIT_BRANCH = "main"  // Ensure this is correct (not "Main")
     }
 
     stages {
         stage('Clone Repository') {
             steps {
                 echo "Step: Cloning the GitHub repository."
-                checkout scm
+                script {
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: "*/${GIT_BRANCH}"]],
+                        userRemoteConfigs: [[
+                            url: GIT_REPO,
+                            credentialsId: GIT_CREDENTIALS_ID
+                        ]]
+                    ])
+                }
             }
         }
 
