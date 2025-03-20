@@ -2,9 +2,9 @@ pipeline {
     agent any
     
     environment {
-        GIT_CREDENTIALS_ID = '51dce4ea-fa48-4e6d-bd33-781e009f5571'  // Verify in Jenkins Credentials
+        GIT_CREDENTIALS_ID = '51dce4ea-fa48-4e6d-bd33-781e009f5571'
         GIT_REPO = 'https://github.com/Sanjana24-hub/jenkins-ci-cd.git'
-        GIT_BRANCH = 'main'  // Ensure this matches GitHub (lowercase)
+        GIT_BRANCH = 'Main'  // ✅ FIX: Use "Main" to match Jenkins config
     }
     
     stages {
@@ -13,7 +13,7 @@ pipeline {
                 script {
                     checkout([
                         $class: 'GitSCM',
-                        branches: [[name: "${GIT_BRANCH}"]],  // Ensure correct branch name
+                        branches: [[name: "*/${GIT_BRANCH}"]],  // ✅ Use "Main"
                         userRemoteConfigs: [[
                             url: GIT_REPO,
                             credentialsId: GIT_CREDENTIALS_ID
@@ -83,7 +83,7 @@ pipeline {
                         </body>
                     </html>""",
                     to: 'sanjanakumari5700@gmail.com',
-                    from: 'sanjanakumari5700@gmail.com',  // Use the same sender as SMTP credentials
+                    from: 'jenkins@example.com',
                     replyTo: 'sanjanakumari5700@gmail.com',
                     mimeType: 'text/html'
                 )
