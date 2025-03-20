@@ -93,8 +93,8 @@ pipeline {
                         </body>
                     </html>""",
                     to: 'sanjana4809.be23@chitkara.edu.in',
-                    from: 'jenkins@example.com',
-                    replyTo: 'noreply@example.com',
+                    from: 'sanjana4809.be23@chitkara.edu.in',
+                    replyTo: 'sanjana4809.be23@chitkara.edu.in',
                     mimeType: 'text/html'
                 )
             }
