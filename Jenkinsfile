@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        GIT_CREDENTIALS_ID = '51dce4ea-fa48-4b33-781e009f5571'  
+        GIT_CREDENTIALS_ID = '86b95b27-66ee-45f4-81e0-0c1bcfc2065d'  
         GIT_REPO = 'https://github.com/Sanjana24-hub/jenkins-ci-cd.git'
         GIT_BRANCH = 'main'
         SMTP_CREDS = credentials('gmail-smtp') // Ensure this credential ID is correct
