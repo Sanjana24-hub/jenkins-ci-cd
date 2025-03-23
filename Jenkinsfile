@@ -84,7 +84,7 @@ pipeline {
             steps {
                 echo 'Deploying to production using Kubernetes/Helm/Ansible/AWS CodeDeploy/Terraform...'
                 // Tool: Kubernetes (kubectl)
-                echo 'Tool: Kubernetes/kubectl - Executing: kubectl apply and rollout verification commands'
+                echo 'Tool: Kubernetes'
                 
             }
         }
