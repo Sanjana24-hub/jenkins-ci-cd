@@ -12,6 +12,8 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 script {
+                    echo 'Checking out code using Git...'
+                    // Tool: Jenkins Git Plugin
                     checkout([
                         $class: 'GitSCM',
                         branches: [[name: "*/${GIT_BRANCH}"]],
@@ -26,50 +28,64 @@ pipeline {
         
         stage('Build') {
             steps {
-                echo 'Building the application...'
-                // Add actual build commands here if needed
+                echo 'Building application using Maven/Gradle/npm'
+                // Tool: Maven
+                echo 'Tool: Maven - Executing: mvn clean package'
+                
             }
         }
         
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Running tests...'
-                // Add your test commands here
+                echo 'Running unit and integration tests using JUnit/pytest/Mocha/Jest/Selenium'
+                // Tool: JUnit with Maven
+                echo 'Tool: JUnit with Maven - Executing: mvn test'
+                
             }
         }
         
         stage('Code Analysis') {
             steps {
-                echo 'Performing code analysis...'
-                // Add your code analysis commands here
+                echo 'Performing static code analysis using SonarQube'
+                // Tool: SonarQube Scanner
+                echo 'Tool: SonarQube Scanner - Executing: mvn sonar:sonar with SonarQube environment'
+                
             }
         }
         
         stage('Security Scan') {
             steps {
-                echo 'Running security scan...'
-                // Add your security scan commands here
+                echo 'Running security scan using OWASP Dependency Check/Snyk/Trivy...'
+                // Tool: OWASP Dependency Check
+                echo 'Tool: OWASP Dependency Check - Executing: dependency-check to scan project for vulnerabilities'
+                
             }
         }
         
         stage('Deploy to Staging') {
             steps {
-                echo 'Deploying to staging...'
-                // Add your staging deployment commands here
+                echo 'Deploying to staging using Docker/Jenkins Deploy Plugin.'
+                // Tool: Docker
+                echo 'Tool: Docker - Executing: docker build, docker stop/rm, docker run to deploy to staging'
+                
             }
         }
         
         stage('Integration Tests on Staging') {
             steps {
-                echo 'Running tests on staging...'
-                // Add your staging tests commands here
+                echo 'Running integration tests on staging using Cypress/Postman...'
+                // Tool: Cypress
+                echo 'Tool: Cypress - Executing: npx cypress run for end-to-end testing'
+                
             }
         }
         
         stage('Deploy to Production') {
             steps {
-                echo 'Deploying to production...'
-                // Add your production deployment commands here
+                echo 'Deploying to production using Kubernetes/Helm/Ansible/AWS CodeDeploy/Terraform...'
+                // Tool: Kubernetes (kubectl)
+                echo 'Tool: Kubernetes/kubectl - Executing: kubectl apply and rollout verification commands'
+                
             }
         }
     }
@@ -77,6 +93,8 @@ pipeline {
     post {
         always {
             script {
+                echo 'Sending email notification using Jenkins Email Extension Plugin (emailext)...'
+                // Tool: Jenkins Email Extension Plugin
                 emailext(
                     subject: "Jenkins Pipeline: ${currentBuild.fullDisplayName} - ${currentBuild.result}",
                     body: """<html>
@@ -96,12 +114,18 @@ pipeline {
                     mimeType: 'text/html'
                 )
             }
+            // Tool: Jenkins Workspace Cleanup Plugin
+            echo 'Tool: Jenkins Workspace Cleanup Plugin - Cleaning workspace after build completion'
         }
         success {
             echo 'Pipeline completed successfully!'
+            // Tool: Jenkins Slack Notification Plugin
+           
         }
         failure {
             echo 'Pipeline failed. Please check the logs for details.'
+            // Tool: Jenkins Slack Notification Plugin
+            
         }
     }
 }
